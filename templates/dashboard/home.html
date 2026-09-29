@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-header">
+    <h1>{{ greeting }}, {{ profile.full_name|default:user.username }}</h1>
+    <p>TODAY — {{ today_date }}</p>
+</div>
+
+<div class="hero-grid">
+    <div class="hero-card panel">
+        <span class="eyebrow">NOW</span>
+        {% if current_task %}
+            <h2>{{ current_task.title }}</h2>
+            <p>{{ current_task.start|time:'h:i A' }} — {{ current_task.end|time:'h:i A' }}</p>
+            <div class="countdown" data-end="{{ current_task.end|date:'c' }}">
+                <span>Time remaining:</span>
+                <strong class="countdown-value">--:--:--</strong>
+            </div>
+            <div class="progress-bar"><span style="width: 58%"></span></div>
+            <div class="card-actions">
+                {% if current_task.task %}
+                <a class="primary-btn" href="{% url 'task_detail' current_task.task.pk %}">View</a>
+                {% endif %}
+            </div>
+        {% else %}
+            <h2>Your day is clear</h2>
+            <p>Add tasks to build a smarter daily timetable.</p>
+        {% endif %}
+    </div>
+
+    <div class="side-stack">
+        <div class="mini-panel panel">
+            <span class="eyebrow">NEXT</span>
+            {% if next_task %}
+                <h3>{{ next_task.title }}</h3>
+                <p>Starts at {{ next_task.start|time:'h:i A' }}</p>
+            {% else %}
+                <p>No upcoming task.</p>
+            {% endif %}
+        </div>
+        <div class="mini-panel panel">
+            <span class="eyebrow">TODAY'S PROGRESS</span>
+            <h3>{{ progress.done }} completed / {{ progress.total }}</h3>
+            <div class="progress-bar"><span style="width: {{ progress.percent }}%"></span></div>
+            <p>{{ progress.remaining }} remaining</p>
+        </div>
+    </div>
+</div>
+
+<div class="panel today-plan">
+    <div class="section-header">
+        <h2>Today's Plan</h2>
+        <a href="{% url 'task_create' %}" class="secondary-btn">Add task</a>
+    </div>
+    {% for task in tasks %}
+        <div class="task-row">
+            <div class="task-status-dot"></div>
+            <div>
+                <strong>{{ task.title }}</strong>
+                <p>{{ task.description|default:'No details yet.' }}</p>
+            </div>
+            <span>{{ task.priority }}</span>
+        </div>
+    {% empty %}
+        <p class="empty-state">No tasks yet. Create your first task and we’ll help organize your day.</p>
+    {% endfor %}
+</div>
+{% endblock %}

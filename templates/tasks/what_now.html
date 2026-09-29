@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="panel recommendation-card">
+    <span class="eyebrow">WHAT SHOULD I DO NOW?</span>
+    <h1>{{ recommendation.task }}</h1>
+    <p>You have {{ recommendation.remaining|default:0 }} seconds remaining.</p>
+    <p>Next: {{ recommendation.next }}</p>
+</div>
+{% endblock %}

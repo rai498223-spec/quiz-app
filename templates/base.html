@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FlowPlan{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="brand">FlowPlan</div>
+            <nav class="nav-links">
+                <a href="{% url 'dashboard_home' %}">Dashboard</a>
+                <a href="{% url 'timetable' %}">Today's Timetable</a>
+                <a href="{% url 'task_list' %}">Tasks</a>
+                <a href="{% url 'calendar' %}">Calendar</a>
+                <a href="{% url 'overview' %}">Analytics</a>
+                <a href="{% url 'settings' %}">Settings</a>
+            </nav>
+            <div class="profile-mini">
+                <strong>{{ user.username }}</strong>
+                <a href="{% url 'logout' %}">Logout</a>
+            </div>
+        </aside>
+        <main class="main-panel">
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                    <div class="message {{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    {% else %}
+        <div class="auth-shell">
+            {% if messages %}
+                <div class="messages auth-messages">
+                    {% for message in messages %}
+                    <div class="message {{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% block auth_content %}{% endblock %}
+        </div>
+    {% endif %}
+    <script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>

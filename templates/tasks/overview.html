@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="section-header">
+    <h1>Today's overview</h1>
+</div>
+<div class="stats-grid">
+    <div class="stat-card panel">
+        <span>Total tasks</span>
+        <strong>{{ total }}</strong>
+    </div>
+    <div class="stat-card panel">
+        <span>Completed</span>
+        <strong>{{ completed }}</strong>
+    </div>
+    <div class="stat-card panel">
+        <span>Remaining</span>
+        <strong>{{ remaining }}</strong>
+    </div>
+    <div class="stat-card panel">
+        <span>Overdue</span>
+        <strong>{{ overdue }}</strong>
+    </div>
+</div>
+<div class="panel large-panel">
+    <h2>Productivity</h2>
+    <div class="progress-bar"><span style="width: {{ report.percent }}%"></span></div>
+    <p>{{ report.percent }}% completion</p>
+</div>
+{% endblock %}

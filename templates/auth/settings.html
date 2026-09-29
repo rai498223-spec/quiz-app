@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Settings</h1>
+<form method="post" class="multi-form">
+    {% csrf_token %}
+    <div class="card-grid">
+        <div class="panel">
+            <h3>Profile</h3>
+            {{ profile_form.as_p }}
+        </div>
+        <div class="panel">
+            <h3>Routine</h3>
+            {{ routine_form.as_p }}
+        </div>
+        <div class="panel">
+            <h3>Notifications</h3>
+            {{ preferences_form.as_p }}
+        </div>
+    </div>
+    <button type="submit" class="primary-btn">Save</button>
+</form>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Calendar</h1>
+<div class="calendar-grid">
+    {% for task in tasks %}
+    <div class="calendar-item panel">
+        <h3>{{ task.title }}</h3>
+        <p>{{ task.deadline|date:'M d, Y'|default:'No date' }}</p>
+        <span>{{ task.priority }}</span>
+    </div>
+    {% empty %}
+    <div class="panel empty-state">No tasks yet to show on the calendar.</div>
+    {% endfor %}
+</div>
+{% endblock %}

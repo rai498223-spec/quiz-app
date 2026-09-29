@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="section-header">
+    <h1>Tasks</h1>
+    <a href="{% url 'task_create' %}" class="primary-btn">Add task</a>
+</div>
+
+<form method="get" class="filter-bar panel">
+    <input type="search" name="q" value="{{ request.GET.q|default:'' }}" placeholder="Search tasks">
+    <select name="status">
+        <option value="">Status</option>
+        <option value="Not Started">Not Started</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Completed">Completed</option>
+        <option value="Overdue">Overdue</option>
+    </select>
+    <select name="priority">
+        <option value="">Priority</option>
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+        <option value="Urgent">Urgent</option>
+    </select>
+    <select name="sort">
+        <option value="deadline">Sort by deadline</option>
+        <option value="priority">Sort by priority</option>
+        <option value="duration">Sort by duration</option>
+        <option value="created">Sort by created</option>
+    </select>
+    <button type="submit" class="secondary-btn">Filter</button>
+</form>
+
+<div class="task-grid">
+    {% for task in tasks %}
+    <div class="task-card panel">
+        <div class="task-topline">
+            <span class="priority-badge priority-{{ task.priority|lower }}">{{ task.priority }}</span>
+            <span>{{ task.status }}</span>
+        </div>
+        <h3>{{ task.title }}</h3>
+        <p>{{ task.description|default:'No description yet.' }}</p>
+        <div class="task-meta">
+            <span>{{ task.duration_display }}</span>
+            <span>{{ task.category.name|default:'General' }}</span>
+            <span>{{ task.deadline|date:'M d, Y'|default:'No deadline' }}</span>
+        </div>
+        <div class="card-actions">
+            <a href="{% url 'task_detail' task.pk %}" class="secondary-btn">Open</a>
+            <a href="{% url 'task_update' task.pk %}" class="secondary-btn">Edit</a>
+            <form method="post" action="{% url 'task_delete' task.pk %}" onsubmit="return confirm('Delete this task?')" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="primary-btn danger-btn">Delete</button>
+            </form>
+        </div>
+    </div>
+    {% empty %}
+    <div class="panel empty-state">No tasks yet. <a href="{% url 'task_create' %}">Create your first task</a>.</div>
+    {% endfor %}
+</div>
+{% endblock %}

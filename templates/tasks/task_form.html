@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="panel form-panel">
+    <h1>{% if editing %}Edit task{% else %}Add task{% endif %}</h1>
+    <form method="post" class="task-form">
+        {% csrf_token %}
+        <div class="field-row">
+            <label>Task name</label>
+            <input type="text" name="title" value="{{ task.title|default:'' }}" required>
+        </div>
+        <div class="field-row">
+            <label>Description</label>
+            <textarea name="description">{{ task.description|default:'' }}</textarea>
+        </div>
+        <div class="split-row">
+            <div class="field-row">
+                <label>Category</label>
+                <select name="category">
+                    {% for category in categories %}
+                    <option value="{{ category.pk }}" {% if task.category_id == category.pk %}selected{% endif %}>{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="field-row">
+                <label>Priority</label>
+                <select name="priority">
+                    <option value="Low" {% if task.priority == 'Low' %}selected{% endif %}>Low</option>
+                    <option value="Medium" {% if task.priority == 'Medium' or not task %}selected{% endif %}>Medium</option>
+                    <option value="High" {% if task.priority == 'High' %}selected{% endif %}>High</option>
+                    <option value="Urgent" {% if task.priority == 'Urgent' %}selected{% endif %}>Urgent</option>
+                </select>
+            </div>
+        </div>
+        <div class="split-row">
+            <div class="field-row">
+                <label>Duration (minutes)</label>
+                <input type="number" name="estimated_duration_minutes" value="{{ task.estimated_duration_minutes|default:60 }}">
+            </div>
+            <div class="field-row">
+                <label>Deadline</label>
+                <input type="datetime-local" name="deadline" value="{% if task.deadline %}{{ task.deadline|date:'Y-m-d\TH:i' }}{% endif %}">
+            </div>
+        </div>
+        <div class="split-row">
+            <div class="field-row">
+                <label>Preferred start time</label>
+                <input type="time" name="preferred_start_time" value="{% if task.preferred_start_time %}{{ task.preferred_start_time|time:'H:i' }}{% endif %}">
+            </div>
+            <div class="field-row">
+                <label>Preferred end time</label>
+                <input type="time" name="preferred_end_time" value="{% if task.preferred_end_time %}{{ task.preferred_end_time|time:'H:i' }}{% endif %}">
+            </div>
+        </div>
+        <div class="field-row">
+            <label>Notes</label>
+            <textarea name="notes">{{ task.notes|default:'' }}</textarea>
+        </div>
+        <button type="submit" class="primary-btn">Save task</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="panel">
+    <h1>{{ profile.full_name|default:user.username }}</h1>
+    <p>Language: {{ profile.preferred_language }}</p>
+    <p>Timezone: {{ profile.timezone }}</p>
+</div>
+{% endblock %}

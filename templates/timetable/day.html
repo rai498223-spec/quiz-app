@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="section-header">
+    <h1>Today's timetable</h1>
+    <a href="{% url 'generate_schedule' %}" class="primary-btn">Refresh schedule</a>
+</div>
+<div class="timeline">
+    {% for block in blocks %}
+    <div class="timeline-item {% if block.is_break %}break-item{% endif %}">
+        <div class="time-label">{{ block.start|time:'H:i' }}</div>
+        <div class="timeline-card panel">
+            <h3>{{ block.title }}</h3>
+            <p>{{ block.start|time:'h:i A' }} — {{ block.end|time:'h:i A' }}</p>
+            <small>{{ block.description|default:'Task block' }}</small>
+        </div>
+    </div>
+    {% empty %}
+    <div class="panel empty-state">Your day is open. Add tasks to build a timetable.</div>
+    {% endfor %}
+</div>
+{% endblock %}
