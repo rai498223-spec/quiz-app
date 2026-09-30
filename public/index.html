@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f5ef">
+  <meta name="description" content="A clear, calm workspace for planning your day.">
+  <title>FlowPlan | Daily planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#dashboard" aria-label="FlowPlan home"><span class="brand-mark">F</span>flowplan</a>
+      <div class="nav-label">WORKSPACE</div>
+      <nav class="nav-links" aria-label="Main navigation">
+        <button class="nav-link active" type="button" data-view="dashboard">Overview</button>
+        <button class="nav-link" type="button" data-view="tasks">My tasks</button>
+        <button class="nav-link" type="button" data-view="calendar">This week</button>
+        <button class="nav-link" type="button" data-view="insights">Insights</button>
+      </nav>
+      <div class="sidebar-note">
+        <span class="note-kicker">A LITTLE SPACE</span>
+        <p>Good work needs room to breathe. Keep today focused.</p>
+      </div>
+      <div class="local-note"><span class="status-dot"></span> Saved on this device</div>
+    </aside>
+
+    <main class="main-panel">
+      <header class="topbar">
+        <div class="breadcrumb">YOUR SPACE <span>/</span> <strong id="section-name">OVERVIEW</strong></div>
+        <button class="top-add" type="button" data-open-task>＋ <span>New task</span></button>
+      </header>
+
+      <section class="view active" id="view-dashboard" aria-labelledby="greeting">
+        <div class="page-heading">
+          <div><p class="eyebrow" id="today-label">YOUR DAY</p><h1 id="greeting">Make today count.</h1><p class="subheading">A little structure goes a long way.</p></div>
+          <div class="date-stamp" id="date-stamp"></div>
+        </div>
+
+        <div class="summary-grid" id="summary-grid"></div>
+
+        <div class="dashboard-grid">
+          <section class="panel focus-panel" aria-labelledby="focus-title">
+            <div class="panel-heading"><div><p class="eyebrow">IN FOCUS</p><h2 id="focus-title">Your next step</h2></div><span class="focus-orbit" aria-hidden="true">01</span></div>
+            <div id="focus-content"></div>
+          </section>
+          <section class="panel rhythm-panel" aria-labelledby="rhythm-title">
+            <div class="panel-heading"><div><p class="eyebrow">THE RHYTHM</p><h2 id="rhythm-title">Today's progress</h2></div><span class="progress-number" id="progress-number">0%</span></div>
+            <div class="progress-track"><span id="progress-fill"></span></div>
+            <div class="progress-caption"><span id="progress-done">0 finished</span><span id="progress-left">0 to go</span></div>
+            <div class="rhythm-divider"></div>
+            <p class="rhythm-quote">“You don't have to see the whole staircase, just take the first step.”</p>
+          </section>
+        </div>
+
+        <section class="panel task-panel" aria-labelledby="today-tasks-title">
+          <div class="panel-heading list-heading"><div><p class="eyebrow">ON YOUR PLATE</p><h2 id="today-tasks-title">Today's tasks</h2></div><button class="text-button" type="button" data-go="tasks">View all <span aria-hidden="true">→</span></button></div>
+          <div id="today-task-list" class="task-list"></div>
+        </section>
+      </section>
+
+      <section class="view" id="view-tasks" aria-labelledby="tasks-title" hidden>
+        <div class="page-heading compact-heading"><div><p class="eyebrow">YOUR WORK, AT YOUR PACE</p><h1 id="tasks-title">My tasks</h1><p class="subheading">Keep the important things moving.</p></div><button class="primary-button" type="button" data-open-task>＋ Add a task</button></div>
+        <div class="filter-row"><label class="search-field"><span class="sr-only">Search tasks</span><input id="task-search" type="search" placeholder="Search your tasks"></label><select id="task-filter" aria-label="Filter tasks"><option value="all">All tasks</option><option value="open">To do</option><option value="done">Completed</option></select></div>
+        <section class="panel task-panel"><div id="all-task-list" class="task-list"></div></section>
+      </section>
+
+      <section class="view" id="view-calendar" aria-labelledby="calendar-title" hidden>
+        <div class="page-heading compact-heading"><div><p class="eyebrow">A WIDER LENS</p><h1 id="calendar-title">This week</h1><p class="subheading">Your commitments, with space between them.</p></div></div>
+        <div id="week-list" class="week-list"></div>
+      </section>
+
+      <section class="view" id="view-insights" aria-labelledby="insights-title" hidden>
+        <div class="page-heading compact-heading"><div><p class="eyebrow">NOTICE YOUR MOMENTUM</p><h1 id="insights-title">Insights</h1><p class="subheading">Small wins are still wins.</p></div></div>
+        <div id="insights-content" class="insights-grid"></div>
+      </section>
+      <footer class="page-footer">FlowPlan <span>·</span> A quieter way to get things done</footer>
+    </main>
+  </div>
+
+  <dialog class="task-dialog" id="task-dialog" aria-labelledby="dialog-title">
+    <form id="task-form" method="dialog">
+      <div class="dialog-heading"><div><p class="eyebrow">MAKE A LITTLE PROGRESS</p><h2 id="dialog-title">Add a task</h2></div><button class="close-button" type="button" data-close-task aria-label="Close">×</button></div>
+      <label class="form-field">Task name<input name="title" maxlength="100" placeholder="What needs doing?" required></label>
+      <div class="form-row"><label class="form-field">Due date<input type="date" name="date" required></label><label class="form-field">Priority<select name="priority"><option>Medium</option><option>Low</option><option>High</option></select></label></div>
+      <label class="form-field">A note, if useful<input name="description" maxlength="160" placeholder="Add a little context"></label>
+      <div class="dialog-actions"><button class="secondary-button" type="button" data-close-task>Cancel</button><button class="primary-button" type="submit">Add task</button></div>
+    </form>
+  </dialog>
+</body>
+</html>
